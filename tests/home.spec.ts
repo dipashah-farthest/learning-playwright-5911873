@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Home page", () => {
+test.describe("Home page with no auth", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("https://practicesoftwaretesting.com/");
   });
@@ -26,5 +26,15 @@ test.describe("Home page", () => {
     await page.getByTestId("search-submit").click();
     await expect(productGrid.getByRole("link")).toHaveCount(1);
     await expect(page.getByAltText("Thor Hammer")).toBeVisible();
+  });
+});
+
+test.describe("Home page with customer 01 auth", () => {
+  test.use({ storageState: ".auth/customer01.json" });
+  test.beforeEach(async ({ page }) => {
+    await page.goto("https://practicesoftwaretesting.com/");
+  });
+  test("check sign in", async ({ page }) => {
+    await expect(page.getByTestId("nav-sign-in")).not.toBeVisible();
   });
 });
